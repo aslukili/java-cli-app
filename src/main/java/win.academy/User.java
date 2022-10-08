@@ -5,7 +5,6 @@ public abstract class User {
   private String fullName;
   private String email;
   private String role; /*we add role as a string instead of creating a class for role*/
-
   private boolean isActive;
 
   public User(int id, String fullName, String email, String role) {
@@ -13,7 +12,6 @@ public abstract class User {
     this.fullName = fullName;
     this.email = email;
     this.role = role;
-    this.isActive = isActive;
   }
 
   public int getId() {
