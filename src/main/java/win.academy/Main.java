@@ -4,6 +4,7 @@ package win.academy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -220,19 +221,40 @@ public class Main {
   }
 
   private static void subjectOperations(){
-    System.out.println("*** students operations ***");
+    System.out.println("*** subjects operations ***");
 
     System.out.println("1> count of students of a subject");
+    System.out.println("2> list students of a subject");
+    System.out.println("3> back to student operaitons");
 
     int choice =  userInput.nextInt();
 
     switch (choice){
       case 1:
-        System.out.print("there are ");
-        System.out.print(Main.colleges.get(0).getDepartments().get(0).getSubjects().get(0).getStudents().size());
-        System.out.print(" enrolled in this subject");
+        System.out.print("subject id: ");
+        int subjectId = userInput.nextInt();
+        Subject subjectInfo = Main.colleges.get(0).getDepartments().get(0).getSubjects().stream()
+          .filter(subject -> subject.getId() == subjectId).findFirst().orElse(null);
+
+        assert subjectInfo != null;
+        System.out.print("there are "+ subjectInfo.getStudents().size() + " student enrolled in this subject");
+        subjectOperations();
         break;
+
       case 2:
+        System.out.print("subject id: ");
+        subjectId = userInput.nextInt();
+        subjectInfo = Main.colleges.get(0).getDepartments().get(0).getSubjects().stream()
+          .filter(subject -> subject.getId() == subjectId).findFirst().orElse(null);
+
+        assert subjectInfo != null;
+        System.out.println("students enrolled in this subject: ");
+        subjectInfo.getStudents().forEach(student -> System.out.println(student.getFullName() + " " + student.getStartingDate()));
+        subjectOperations();
+        break;
+
+      case 3:
+        studentOperations();
         break;
       default: main(null);
     }
