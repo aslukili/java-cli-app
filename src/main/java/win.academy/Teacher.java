@@ -8,6 +8,10 @@ public class Teacher extends User {
     this.room = room;
   }
 
+  public Teacher() {
+    super();
+  }
+
   public Room getRoom() {
     return room;
   }

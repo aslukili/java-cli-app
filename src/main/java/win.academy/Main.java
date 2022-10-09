@@ -1,17 +1,16 @@
 package win.academy;
 
-import com.sun.xml.internal.ws.addressing.WsaActionUtil;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Date;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
   // let's assume it all starts from an array of colleges
   static ArrayList<College> colleges = new ArrayList<>();
   //array list of students where all students are added
+  static ArrayList<Student> students = new ArrayList<>();
   static Scanner userInput = new Scanner(System.in);  // Create a Scanner object
 
   public static void main(String[] args) {
@@ -30,6 +29,28 @@ public class Main {
     System.out.println("5> manage subjects");
     System.out.println("6> manage rooms");
 
+    // mock data
+//    colleges.clear();
+    colleges.add(new College(1, "UAE", new Address()));
+    colleges.add(new College(2, "UM6P", new Address()));
+    colleges.add(new College(3, "UMI", new Address()));
+    colleges.add(new College(4, "YC", new Address()));
+    colleges.add(new College(5, "OTHER", new Address()));
+    // deps
+    colleges.get(0).getDepartments().add(new Department(1, "physics"));
+    colleges.get(0).getDepartments().add(new Department(2, "maths"));
+    colleges.get(0).getDepartments().add(new Department(3, "info"));
+    // subjects
+    colleges.get(0).getDepartments().get(0).getSubjects().add(new Subject(1, "Classical Mechanics", new Teacher()));
+    colleges.get(0).getDepartments().get(0).getSubjects().add(new Subject(1, "Quantum Physics", new Teacher()));
+    colleges.get(0).getDepartments().get(0).getSubjects().add(new Subject(1, "French", new Teacher()));
+
+    //students
+    students.add(new Student(1, "Abdeslam Loukili", "email@email.com", "student", new Date()));
+    students.add(new Student(2, "Abdeslam Lkili", "email@email.co", "student", new Date()));
+    students.add(new Student(3, "Abdeslam Li", "email@emal.com", "student", new Date()));
+    students.add(new Student(4, "Abdeslam Louli", "email@eail.com", "student", new Date()));
+
 
     choice = userInput.nextInt(); // reading user choice
 
@@ -44,10 +65,11 @@ public class Main {
         // TODO teacherOperations();
         break;
       case 4:
-        // TODO studentOperations()
+        studentOperations();
         break;
       case 5:
         // TODO subjectOperations()
+        subjectOperations();
         break;
       case 6:
         // TODO roomOperations()
@@ -86,6 +108,7 @@ public class Main {
         break;
       case 3:
         // delete a college
+        // TODO CollegeService.deleteCollegeService() can be replaced with AppServices.DeleteObjectService() using generics
         colleges.remove(CollegeService.deleteCollegeService());
         System.out.println("College deleted successfully!");
         collegeOperations();
@@ -133,7 +156,7 @@ public class Main {
           System.out.println();
         });
         System.out.println();
-        collegeOperations();
+        departmentOperations();
         break;
       case 3:
         // delete a department
@@ -150,4 +173,69 @@ public class Main {
     }
   }
 
+
+  private static void studentOperations() {
+    System.out.println("*** students operations ***");
+
+    System.out.println("1> add a student");
+    System.out.println("2> list all students");
+    System.out.println("3> delete a student");
+    System.out.println("4> update a student info");
+    System.out.println("5> add student to subject");
+    System.out.println("or press any key to return to main menu");
+
+    int choice =  userInput.nextInt();
+
+    switch (choice){
+      case 1:
+        students.add(StudentServices.addStudentService());
+        studentOperations();
+        break;
+      case 2:
+        // we use a lambda expression instead of writing the method as a separated service
+        students.forEach(student -> System.out.println("Student Id: " + student.getId() + ",  Student Name: " + student.getFullName() + ", enroll date: "
+          + student.getStartingDate()
+        ));
+        System.out.println();
+        studentOperations();
+        break;
+      case 3:
+        // TODO StudentServices.deleteStudentService() can be replaced with AppServices.DeleteObjectService() using generics
+        students.remove(StudentServices.deleteStudentService());
+        System.out.println("Student deleted successfully!");
+        studentOperations();
+        break;
+      case 4:
+        // TODO  updating a record
+        break;
+      case 5:
+        StudentServices.attachStudentToSubjectService();
+        System.out.println("student added successfully!");
+        // call to subjectOperations
+        subjectOperations();
+        studentOperations();
+        break;
+      default: main(null);
+    }
+  }
+
+  private static void subjectOperations(){
+    System.out.println("*** students operations ***");
+
+    System.out.println("1> count of students of a subject");
+
+    int choice =  userInput.nextInt();
+
+    switch (choice){
+      case 1:
+        System.out.print("there are ");
+        System.out.print(Main.colleges.get(0).getDepartments().get(0).getSubjects().get(0).getStudents().size());
+        System.out.print(" enrolled in this subject");
+        break;
+      case 2:
+        break;
+      default: main(null);
+    }
+
+  }
 }
