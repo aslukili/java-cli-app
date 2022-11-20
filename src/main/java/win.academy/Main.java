@@ -12,7 +12,7 @@ public class Main {
   static ArrayList<College> colleges = new ArrayList<>();
   //array list of students where all students are added
   static ArrayList<Student> students = new ArrayList<>();
-  static Scanner userInput = new Scanner(System.in);  // Create a Scanner object
+  static Scanner userInput = new Scanner(System.in);
 
   public static void main(String[] args) {
     int choice; /*for storing user choice*/
@@ -193,6 +193,7 @@ public class Main {
         studentOperations();
         break;
       case 2:
+
         // we use a lambda expression instead of writing the method as a separated service
         students.forEach(student -> System.out.println("Student Id: " + student.getId() + ",  Student Name: " + student.getFullName() + ", enroll date: "
           + student.getStartingDate()
